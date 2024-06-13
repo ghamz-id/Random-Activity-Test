@@ -9,13 +9,13 @@ import FetchController from '../utils/fetch.controller';
 
 const App = () => {
   const [activity, setActivity] = useState<Data>();
-  const [savedActivities, setSavedActivities] = useState<Data[]>([]);
+  const [savedAct, setSaveAct] = useState<Data[]>();
 
   useEffect(() => {
     randomActivity();
     (async () => {
       const load = await FetchController.loadSavedActivities()
-      setSavedActivities(load)
+      setSaveAct(load)
     })()
   }, []);
 
@@ -26,10 +26,10 @@ const App = () => {
 
   const saveActivity = async () => {
     if (activity) {
-      const update = savedActivities ? [...savedActivities, activity] : [activity]
-      const check = savedActivities.find(savedAct => savedAct.activity === activity.activity);
+      const check = savedAct && savedAct.find(item => item.activity === activity.activity);
       if (!check) {
-        setSavedActivities(update);
+        const update = savedAct && [...savedAct, activity]
+        setSaveAct(update);
         await AsyncStorage.setItem('Activity', JSON.stringify(update));
       } else {
         Alert.alert("Activity already saved.");
@@ -38,9 +38,9 @@ const App = () => {
   };
 
   const deleteActivity: DeleteMethod = async (index: number) => {
-    const updatedActivities = savedActivities.filter((_, i) => i !== index);
-    setSavedActivities(updatedActivities);
-    await AsyncStorage.setItem('Activity', JSON.stringify(updatedActivities));
+    const updateAct = savedAct && savedAct.filter((_, i) => i !== index);
+    setSaveAct(updateAct);
+    await AsyncStorage.setItem('Activity', JSON.stringify(updateAct));
   };
 
   return (
@@ -57,7 +57,7 @@ const App = () => {
       <View className='w-full h-2/5 bg-white bg-opacity-50 p-2 rounded'>
         <Text className='font-bold pb-2'>Saved Activities:</Text>
         <ScrollView className='flex'>
-          {savedActivities && savedActivities.map((act, index) => (
+          {savedAct && savedAct.map((act, index) => (
             <CardList key={index} act={act} index={index} deleteActivity={deleteActivity} />
           ))}
         </ScrollView>
