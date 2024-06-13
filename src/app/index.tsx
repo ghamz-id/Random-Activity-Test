@@ -9,7 +9,7 @@ import FetchController from '../utils/fetch.controller';
 
 const App = () => {
   const [activity, setActivity] = useState<Data>();
-  const [savedAct, setSaveAct] = useState<Data[]>();
+  const [savedAct, setSaveAct] = useState<Data[]>([]);
 
   useEffect(() => {
     randomActivity();
@@ -24,21 +24,29 @@ const App = () => {
     setActivity(data)
   }
 
-  const saveActivity = async () => {
-    if (activity) {
-      const check = savedAct && savedAct.find(item => item.activity === activity.activity);
-      if (!check) {
-        const update = savedAct && [...savedAct, activity]
+  const saveActivity = async () => { // Save and Validation
+    if (!savedAct) {
+      if (activity) {
+        const update = [activity]
         setSaveAct(update);
         await AsyncStorage.setItem('Activity', JSON.stringify(update));
-      } else {
-        Alert.alert("Activity already saved.");
+      }
+    } else {
+      if (activity) {
+        const check = savedAct.find(item => item.activity === activity.activity)
+        if (!check) {
+          const update = [...savedAct, activity]
+          setSaveAct(update);
+          await AsyncStorage.setItem('Activity', JSON.stringify(update));
+        } else {
+          Alert.alert("Activity already saved.");
+        }
       }
     }
   };
 
-  const deleteActivity: DeleteMethod = async (index: number) => {
-    const updateAct = savedAct && savedAct.filter((_, i) => i !== index);
+  const deleteActivity: DeleteMethod = async (index: number) => { // Delete Fitur
+    const updateAct = savedAct.filter((_, i) => i !== index);
     setSaveAct(updateAct);
     await AsyncStorage.setItem('Activity', JSON.stringify(updateAct));
   };

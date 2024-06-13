@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "expo-todo-list",
-    "slug": "expo-todo-list",
+    "slug": "random-activity",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/favicon.png",
@@ -36,8 +36,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "b3d14d67-8329-43fb-b7af-0167449d46a4"
+        "projectId": "8edddb98-42c6-4d63-9c44-cb4bfc52f913"
       }
-    }
+    },
+    "owner": "m_hamdi"
   }
 }
