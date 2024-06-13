@@ -13,12 +13,11 @@ const App = () => {
   const [savedActivities, setSavedActivities] = useState<Data[]>([]);
 
   useEffect(() => {
+    randomActivity();
     (async () => {
-      const data = await fetchData()
-      setActivity(data)
       const load = await loadSavedActivities();
       setSavedActivities(load)
-    })()
+    })();
   }, []);
 
   const randomActivity = async () => {
