@@ -4,8 +4,8 @@
     "slug": "expo-todo-list",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "schema": "expo-todo-list",
+    "icon": "./assets/favicon.png",
+    "scheme": "expo-todo-list",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",

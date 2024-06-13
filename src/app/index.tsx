@@ -5,8 +5,7 @@ import { Data, DeleteMethod } from '../models/types';
 import CardList from '../components/card/cardList';
 import BtnRandomise from '../components/button/btnRandom';
 import BtnSave from '../components/button/btnSave';
-import fetchData from '../utils/fetchData';
-import loadSavedActivities from '../utils/loadActivities';
+import FetchController from '../utils/fetch.controller';
 
 const App = () => {
   const [activity, setActivity] = useState<Data>();
@@ -15,21 +14,21 @@ const App = () => {
   useEffect(() => {
     randomActivity();
     (async () => {
-      const load = await loadSavedActivities();
+      const load = await FetchController.loadSavedActivities()
       setSavedActivities(load)
-    })();
+    })()
   }, []);
 
   const randomActivity = async () => {
-    const data = await fetchData()
+    const data = await FetchController.fetchData()
     setActivity(data)
   }
 
   const saveActivity = async () => {
     if (activity) {
+      const update = savedActivities ? [...savedActivities, activity] : [activity]
       const check = savedActivities.find(savedAct => savedAct.activity === activity.activity);
       if (!check) {
-        const update = [...savedActivities, activity];
         setSavedActivities(update);
         await AsyncStorage.setItem('Activity', JSON.stringify(update));
       } else {
